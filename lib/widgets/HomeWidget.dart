@@ -11,46 +11,15 @@ class HomeWidget extends StatefulWidget {
   late final objectbox;
   HomeWidget({Key? key, required this.parentCtx, required this.objectbox});
 
-  // current = 4 해야지, 언어 바꿀때, 선택이 설정으로 된다.
-  static int _currentIndex = 4;
-
-  static void changePage(BuildContext context, int ind) async {
-    _HomeState? state = context.findAncestorStateOfType<_HomeState>();
-    if(state != null)
-      state.onTabTapped(ind);
-  }
-
   @override
   State createState() => _HomeState();
 
 }
 
 class _HomeState extends State<HomeWidget>{
-  final List<Widget> screens = [];
-//  DatabaseHelper dbHelper = DatabaseHelper();
-  final pageController = PageController(initialPage: 2);
+  int selectedPageIndex = 2;
   bool ready = false;
   String? username = "";
-
-  @override
-  void initState(){
-    super.initState();
-    HomeWidget._currentIndex = 2;
-  }
-
-  List<Widget> _children() => [
-    WorkoutWidget(objectbox: widget.objectbox),
-    RoutineWidget(objectbox: widget.objectbox),
-    DashboardWidget(objectbox: widget.objectbox),
-    CalendarWidget(objectbox: widget.objectbox),
-    SettingsWidget(objectbox: widget.objectbox),
-  ];
-
-  changePage(int index){
-    setState(() {
-      HomeWidget._currentIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context){
@@ -67,7 +36,7 @@ class _HomeState extends State<HomeWidget>{
                   child: Center(
                       child:
                       Text("Loading data")
-                      /*Image(
+                    /*Image(
                         image: AssetImage('assets/my_icon.png'),
                         width: 150,
                       )*/
@@ -81,50 +50,50 @@ class _HomeState extends State<HomeWidget>{
     return MediaQuery(
         data: mediaQueryData.copyWith(textScaleFactor: 1.0),
         child: Scaffold(
-          body: PageView(
-              onPageChanged: (index) {
-                FocusScope.of(context).unfocus();
-                changePage(index);
-              },
-              controller: pageController,
-              children: _children()
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: Theme.of(widget.parentCtx).colorScheme.secondary,
-            type: BottomNavigationBarType.fixed,
-            onTap: onTabTapped, // new
-            currentIndex: HomeWidget._currentIndex, // new
-            items: [
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.fitness_center),
+          body: [
+            WorkoutWidget(objectbox: widget.objectbox),
+            RoutineWidget(objectbox: widget.objectbox),
+            DashboardWidget(objectbox: widget.objectbox),
+            CalendarWidget(objectbox: widget.objectbox),
+            SettingsWidget(objectbox: widget.objectbox),
+          ][selectedPageIndex],
+          bottomNavigationBar: NavigationBar(
+            height: 65,
+            selectedIndex: selectedPageIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                selectedPageIndex = index;
+              });
+            },
+            destinations: <NavigationDestination>[
+              NavigationDestination(
+                selectedIcon: Icon(Icons.fitness_center),
+                icon: Icon(Icons.fitness_center_outlined),
                 label: AppLocalizations.of(context)!.workout,
               ),
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.repeat),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.repeat),
+                icon: Icon(Icons.repeat_outlined),
                 label: AppLocalizations.of(context)!.routine,
               ),
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.insert_chart_outlined),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.insert_chart),
+                icon: Icon(Icons.insert_chart_outlined),
                 label: AppLocalizations.of(context)!.dashboard,
               ),
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.calendar_today),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.calendar_today),
+                icon: Icon(Icons.calendar_today_outlined),
                 label: AppLocalizations.of(context)!.calendar,
               ),
-              BottomNavigationBarItem(
-                icon: new Icon(Icons.settings),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.settings),
+                icon: Icon(Icons.settings_outlined),
                 label: AppLocalizations.of(context)!.settings,
               ),
             ],
           ),
-      )
+        )
     );
-  }
-
-  void onTabTapped(int index) {
-    setState(() {
-      HomeWidget._currentIndex = index;
-      pageController.animateToPage(HomeWidget._currentIndex, duration: Duration(milliseconds: 500), curve: Curves.ease);
-    });
   }
 }

@@ -10,6 +10,8 @@ import 'package:workout_tracker/widgets/Session/RoutineListWidget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:workout_tracker/widgets/Setting/ProfileSettingWidget.dart';
 
+import 'CalendarWidget.dart';
+
 class DashboardWidget extends StatefulWidget {
   late ObjectBox objectbox;
   DashboardWidget({Key? key, required this.objectbox}) : super(key: key);
@@ -377,7 +379,12 @@ class _DashboardState extends State<DashboardWidget>{
                         color: Colors.white,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(10.0),
-                          onTap: (){HomeWidget.changePage(context, 3);},
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CalendarWidget(objectbox: widget.objectbox)),
+                            );
+                          },
                           child: Container(
                             padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                             child: ListTile(
