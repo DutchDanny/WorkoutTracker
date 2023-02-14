@@ -215,19 +215,17 @@ class _RoutineState extends State<RoutineWidget>{
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: SizedBox(
+              child: Text(AppLocalizations.of(context)!.routine_list),
+            ),
+            actions: _buildActions(),
+            elevation: 0,
+            centerTitle: false,
+          ),
           body: CustomScrollView(
             slivers: <Widget>[
-              SliverAppBar(
-                pinned: true,
-                snap: false,
-                floating: false,
-                backgroundColor: Colors.amberAccent,
-                expandedHeight: 100.0,
-                actions: _buildActions(),
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Text(AppLocalizations.of(context)!.routine_list),
-                ),
-              ),
               SliverList(
                 delegate: SliverChildListDelegate(
                     routineList()

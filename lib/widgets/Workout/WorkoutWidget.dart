@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:workout_tracker/util/koreanSearch.dart';
 import 'package:workout_tracker/util/objectbox.dart';
 import 'package:workout_tracker/util/typedef.dart';
-import 'package:workout_tracker/widgets/HomeWidget.dart';
 import 'package:workout_tracker/widgets/UIComponents.dart';
 import 'package:workout_tracker/widgets/Workout/AddEditWorkoutEntryWidget.dart';
 import 'package:workout_tracker/dbModels/workout_entry_model.dart';
@@ -332,20 +331,17 @@ class _WorkoutState extends State<WorkoutWidget> {
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: SizedBox(
+                child: Text(AppLocalizations.of(context)!.workout_list),
+            ),
+            actions: _buildActions(),
+            elevation: 0,
+            centerTitle: false,
+          ),
           body: CustomScrollView(
             slivers: <Widget>[
-              SliverAppBar(
-                pinned: true,
-                snap: false,
-                floating: false,
-                backgroundColor: Colors.amberAccent,
-                expandedHeight: _isSearching ? 0 : 100.0,
-                actions: _buildActions(),
-                title: _isSearching ? _buildSearchField() : Container(),
-                flexibleSpace: FlexibleSpaceBar(
-                  title: _isSearching ? Container() : Text(AppLocalizations.of(context)!.workout_list),
-                ),
-              ),
               SliverList(
                 delegate: SliverChildListDelegate(
                     workoutList()

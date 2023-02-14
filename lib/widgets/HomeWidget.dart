@@ -58,6 +58,7 @@ class _HomeState extends State<HomeWidget>{
             SettingsWidget(objectbox: widget.objectbox),
           ][selectedPageIndex],
           bottomNavigationBar: NavigationBar(
+            backgroundColor: Colors.white,
             height: 65,
             selectedIndex: selectedPageIndex,
             onDestinationSelected: (int index) {

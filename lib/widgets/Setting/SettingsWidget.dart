@@ -290,18 +290,16 @@ class _SettingsState extends State<SettingsWidget> {
        child: GestureDetector(
            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
            child: Scaffold(
+             appBar: AppBar(
+               automaticallyImplyLeading: false,
+               title: SizedBox(
+                 child: Text(AppLocalizations.of(context)!.settings),
+               ),
+               elevation: 0,
+               centerTitle: false,
+             ),
              body: CustomScrollView(
                slivers: <Widget>[
-                 SliverAppBar(
-                   pinned: true,
-                   snap: false,
-                   floating: false,
-                   backgroundColor: Colors.amberAccent,
-                   expandedHeight: 100.0,
-                   flexibleSpace: FlexibleSpaceBar(
-                     title: Text(AppLocalizations.of(context)!.settings),
-                   ),
-                 ),
                  SliverList(
                    delegate: SliverChildListDelegate(
                        [
